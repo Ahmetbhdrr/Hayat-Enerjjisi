@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", "Georgia", serif;
+}
+
+@variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  body {
+    background-color: #F8F9FA;
+    color: #333;
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .dark body {
+    background-color: #121212;
+    color: #E0E0E0;
+  }
+}
+
+@layer components {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 32px;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+  }
+
+  .dark .glass-card {
+    background: rgba(26, 26, 26, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  .glass-button {
+    background: white;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(138, 43, 226, 0.1);
+    border-radius: 9999px;
+    transition: all 0.3s ease;
+  }
+
+  .dark .glass-button {
+    background: rgba(40, 40, 40, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: #E0E0E0;
+  }
+
+  .glass-button:hover {
+    background: rgba(255, 255, 255, 0.7);
+    transform: scale(1.05);
+  }
+
+  .dark .glass-button:hover {
+    background: rgba(70, 70, 70, 0.7);
+  }
+
+  .nav-item-active {
+    background: rgba(138, 43, 226, 0.15);
+    color: #8A2BE2;
+  }
+
+  .dark .nav-item-active {
+    background: rgba(138, 43, 226, 0.3);
+    color: #BB86FC;
+  }
+
+  .perspective-2000 {
+    perspective: 2000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+}
+
+/* Custom animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Hide scrollbar */
+::-webkit-scrollbar {
+  display: none;
+}
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

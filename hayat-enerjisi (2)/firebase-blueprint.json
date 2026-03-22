@@ -1,0 +1,162 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Stores user points, total tasks, and journal settings.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "points": { "type": "number" },
+        "totalTasksCompleted": { "type": "number" },
+        "journalPasswordHash": { "type": "string", "description": "Hashed password for journal access." },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "notifications": {
+              "type": "object",
+              "properties": {
+                "morning": { "type": "boolean" },
+                "noon": { "type": "boolean" },
+                "evening": { "type": "boolean" }
+              }
+            },
+            "sound": {
+              "type": "object",
+              "properties": {
+                "bgMusicEnabled": { "type": "boolean" },
+                "bgMusicVolume": { "type": "number" }
+              }
+            },
+            "security": {
+              "type": "object",
+              "properties": {
+                "biometricEnabled": { "type": "boolean" }
+              }
+            }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "points"]
+    },
+    "LikedCard": {
+      "title": "Liked Card",
+      "description": "A card liked by the user.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "cardId": { "type": "string" },
+        "type": { "type": "string", "enum": ["motivation", "affirmation"] },
+        "content": { "type": "string" },
+        "likedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "cardId", "type", "content"]
+    },
+    "Journal": {
+      "title": "Journal Entry",
+      "description": "A daily journal entry.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "date": { "type": "string", "format": "date" },
+        "mood": { "type": "string" },
+        "bestThing": { "type": "string" },
+        "gratitude": { "type": "array", "items": { "type": "string" } },
+        "achievement": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "date", "mood"]
+    },
+    "UserTask": {
+      "title": "User Task",
+      "description": "A daily task for the user.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "date": { "type": "string", "format": "date" },
+        "taskId": { "type": "string" },
+        "type": { "type": "string", "enum": ["physical", "spiritual"] },
+        "title": { "type": "string" },
+        "points": { "type": "number" },
+        "completed": { "type": "boolean" },
+        "completedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "date", "taskId", "completed"]
+    },
+    "UserTodoList": {
+      "title": "User To-Do List",
+      "description": "A user-defined to-do list with weekly or yearly duration.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "title": { "type": "string" },
+        "duration": { "type": "string", "enum": ["weekly", "yearly"] },
+        "tasks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "text": { "type": "string" },
+              "completed": { "type": "boolean" }
+            },
+            "required": ["id", "text", "completed"]
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "title", "duration", "tasks"]
+    },
+    "SoulFriend": {
+      "title": "Soul Friend",
+      "description": "A virtual pet for the user.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "type": { "type": "string", "enum": ["cat", "dog", "rabbit", "panda", "fox", "koala"] },
+        "name": { "type": "string" },
+        "petNames": { "type": "object", "description": "Names for each pet type." },
+        "level": { "type": "number" },
+        "experience": { "type": "number" },
+        "hunger": { "type": "number" },
+        "happiness": { "type": "number" },
+        "lastFed": { "type": "string", "format": "date-time" },
+        "lastPlayed": { "type": "string", "format": "date-time" },
+        "outfit": { "type": "string" },
+        "outfits": { "type": "array", "items": { "type": "string" } },
+        "unlockedOutfits": { "type": "array", "items": { "type": "string" } },
+        "unlockedPets": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "type", "name", "level", "hunger", "happiness"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile data."
+    },
+    "/users/{userId}/likedCards/{cardId}": {
+      "schema": "LikedCard",
+      "description": "Cards liked by the user."
+    },
+    "/users/{userId}/journals/{journalId}": {
+      "schema": "Journal",
+      "description": "User journal entries."
+    },
+    "/users/{userId}/tasks/{taskId}": {
+      "schema": "UserTask",
+      "description": "User daily tasks."
+    },
+    "/users/{userId}/todoLists/{listId}": {
+      "schema": "UserTodoList",
+      "description": "User-defined to-do lists."
+    },
+    "/users/{userId}/soulFriend/pet": {
+      "schema": "SoulFriend",
+      "description": "User's soul friend pet."
+    }
+  }
+}
